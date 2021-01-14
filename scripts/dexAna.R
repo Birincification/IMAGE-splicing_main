@@ -84,6 +84,10 @@ garbage <- apply(comp.table, 1, function(row)
         dxr1 = DEXSeqResults( DDS )
         print(row)
 
+	qvals <- perGeneQValue(dxr1)
+	dxr1@listData[["qvalue"]] <- unname(ifelse(is.na(qvals[dxr1[["groupID"]]]), "1", qvals[dxr1[["groupID"]]]))
+
+
         dxr1$transcripts <- gsub("\n", "", dxr1$transcripts)
         write.table(dxr1,out.file, sep="\t", quote=F)
       })
